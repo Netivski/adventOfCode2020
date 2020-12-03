@@ -30,8 +30,6 @@ namespace AdventOfCode {
                     matrix[p.Y][p.X % maxCols] = 'O';
                 }
             }
-            //Console.WriteLine("Number of moves is: {0}", numMoves);
-            //Console.WriteLine("Number of trees is: {0}", numTrees);
             return numTrees;
         }
 
@@ -39,11 +37,6 @@ namespace AdventOfCode {
             Console.WriteLine("Number of trees is: {0}", TraverseMap(new Point(3, 1)));
         }
         public static void Second() {
-            //Right 1, down 1.
-            //Right 3, down 1. (This is the slope you already checked.)
-            //Right 5, down 1.
-            //Right 7, down 1.
-            //Right 1, down 2.
             int a = TraverseMap(new Point(1, 1));
             int b = TraverseMap(new Point(3, 1));
             int c = TraverseMap(new Point(5, 1));
@@ -51,7 +44,6 @@ namespace AdventOfCode {
             int e = TraverseMap(new Point(1, 2));
             long total = (long) a * b * c * d * e;
             Console.WriteLine("Total number of trees multiplied is {0}", total);
-
         }
     }
 }
