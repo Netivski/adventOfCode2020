@@ -27,19 +27,26 @@ namespace AdventOfCode {
 
         public static void Second() {
             var lines = Utils.ReadIntLines(Path.Combine(Inputs, "Day1.txt"));
+
+            int sumTotal = 2020;
+            Array.Sort(lines);
             for (int i = 0; i < lines.Length; i++) {
-                var left = lines[i];
-                for (int j = i + 1; j < lines.Length; j++) {
-                    var right = lines[j];
-                    for (int k = j + 1; k < lines.Length; k++) {
-                        var righter = lines[k];
-                        if (left + right + righter == 2020) {
-                            Console.WriteLine("Found it! {0}+{1}+{2}={3}", left, right, righter, left + right + righter);
-                            Console.WriteLine("Answer is {0}*{1}*{2}={3}", left, right, righter, left * right * righter);
-                            return;
-                        }
+                var first = lines[i];
+                var left = i + 1;
+                var right = lines.Length - 1;
+                while (left < right) {
+                    int tempTotal = first + lines[left] + lines[right];
+                    if (tempTotal == sumTotal) {
+                        Console.WriteLine("Found it! {0}+{1}+{2}={3}", first, lines[left], lines[right], sumTotal);
+                        Console.WriteLine("Answer is {0}*{1}*{2}={3}", first, lines[left], lines[right], first * lines[left] * lines[right]);
+                        return;
+                    } else if (tempTotal > sumTotal) {
+                        right--;
+                    } else if (tempTotal < sumTotal) {
+                        left++;
                     }
                 }
+
             }
         }
     }
