@@ -23,7 +23,6 @@ namespace AdventOfCode {
                 return true;
             }
             return false;
-//cid(Country ID)
         }
 
         public static bool DoubleCheckPassport(Hashtable passport) {
@@ -57,7 +56,6 @@ namespace AdventOfCode {
 
             }
             return false;
-            //cid(Country ID)
         }
 
         public static void First() {
@@ -68,10 +66,15 @@ namespace AdventOfCode {
                 if (DoubleCheckPassport(passport)) { dblValids++; }
             }
             Console.WriteLine("Valid passports: {0}", valids);
-            Console.WriteLine("Double valid passports: {0}", dblValids);
         }
         public static void Second() {
-            
+            var s = Utils.ReadPassports(Path.Combine(Inputs, "Day4.txt"));
+            int valids = 0, dblValids = 0;
+            foreach (var passport in s) {
+                if (CheckPassport(passport)) { valids++; }
+                if (DoubleCheckPassport(passport)) { dblValids++; }
+            }
+            Console.WriteLine("Double valid passports: {0}", dblValids);
         }
     }
 }
