@@ -34,7 +34,26 @@ namespace AdventOfCode {
                 }
             }
             return lines.ToArray();
+        }
 
+        public static IList<Hashtable> ReadPassports(string path) {
+            
+            IList<Hashtable> list = new List<Hashtable>();
+            
+            var lines = File.ReadAllText(path).Split("\n\n");
+            foreach (string l in lines) {
+                var h = new Hashtable();
+                var passport = l.Split("\n");
+                foreach (string p in passport) {
+                    var fields = p.Split(" ");
+                    foreach (string f in fields) {
+                        h.Add(f.Substring(0, 3), f.Substring(4));
+                    }
+                }
+                list.Add(h);
+            }
+            //return File.ReadAllText(path).Split("\n\n");
+            return list;
         }
     }
 }
