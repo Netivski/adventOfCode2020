@@ -1,12 +1,8 @@
-﻿using System;
-using System.IO;
-
-namespace AdventOfCode {
+﻿namespace AdventOfCode {
     class Program {
 
         static void Main(string[] args) {
-            Day4.First();
+            Day5.First();
         }
-
     }
 }

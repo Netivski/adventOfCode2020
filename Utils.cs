@@ -12,10 +12,10 @@ namespace AdventOfCode {
         }
 
         public static int[] ReadIntLines(string path) {
-            
+
             var lines = File.ReadAllLines(path);
             int[] results = new int[lines.Length];
-            for (int i=0; i<lines.Length; i++) {
+            for (int i = 0; i < lines.Length; i++) {
                 results[i] = int.Parse(lines[i]);
             }
             return results;
@@ -24,7 +24,7 @@ namespace AdventOfCode {
         public static char[][] ReadCharMatrix(string path) {
 
             IList<char[]> lines = new List<char[]>();
-            int numCols, numLines;
+            int numCols;
 
             using (var s = new StreamReader(path)) {
                 string line;
@@ -37,9 +37,9 @@ namespace AdventOfCode {
         }
 
         public static IList<Hashtable> ReadPassports(string path) {
-            
+
             IList<Hashtable> list = new List<Hashtable>();
-            
+
             var lines = File.ReadAllText(path).Split("\n\n");
             foreach (string l in lines) {
                 var h = new Hashtable();
@@ -52,7 +52,6 @@ namespace AdventOfCode {
                 }
                 list.Add(h);
             }
-            //return File.ReadAllText(path).Split("\n\n");
             return list;
         }
     }
