@@ -12,6 +12,13 @@ namespace AdventOfCode {
         public static readonly string App = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
         public static readonly string Inputs = Path.Combine(App, "Inputs");
 
+        static int GetValue(string word, char oneChar, char zeroChar) {
+            // Kudos to @brunoloureiro for the optimization hint (https://github.com/Matrikss)
+            word = word.Replace(oneChar, '1');
+            word = word.Replace(zeroChar, '0');
+            return Convert.ToInt32(word, 2);
+        }
+
         static int FindMiddle(double max, char[] ops, char upChar, char downChar) {
             double min = 0;
             for (int i = 0; i < ops.Length; i++) {
@@ -25,7 +32,7 @@ namespace AdventOfCode {
         }
 
         public static void First() {
-            var lines = Utils.ReadLines(Path.Combine(Inputs, "test.txt"));
+            var lines = Utils.ReadLines(Path.Combine(Inputs, "Day5.txt"));
 
             var maxId = 0;
             char[] rowsArr = new char[7];
@@ -35,10 +42,10 @@ namespace AdventOfCode {
 
             foreach (string line in lines) {
                 Array.Copy(line.ToCharArray(), 0, rowsArr, 0, 7);
-                var row = FindMiddle(127, rowsArr, 'B', 'F');
+                var row = GetValue(new string(rowsArr), 'B', 'F');
 
                 Array.Copy(line.ToCharArray(), 7, colsArr, 0, 3);
-                var seat = FindMiddle(7, colsArr, 'R', 'L');
+                var seat = GetValue(new string(colsArr), 'R', 'L');
 
                 int currId = (row * 8) + seat;
                 seats[currId] = 'X';
