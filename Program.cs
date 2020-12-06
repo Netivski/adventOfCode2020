@@ -2,7 +2,7 @@
     class Program {
 
         static void Main(string[] args) {
-            Day5.First();
+            Day6.Second();
         }
     }
 }

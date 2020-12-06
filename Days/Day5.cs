@@ -58,10 +58,7 @@ namespace AdventOfCode {
                 if (seats[i] == default(char) && seats[i - 1] == 'X' && seats[i + 1] == 'X') {
                     Console.WriteLine("Found a seat: {0}", i);
                 }
-
             }
-
-
         }
         public static void Second() {
             First();
