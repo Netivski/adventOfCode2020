@@ -17,6 +17,7 @@
     <None Remove="Inputs\Day4.txt" />
     <None Remove="Inputs\Day5.txt" />
     <None Remove="Inputs\Day6.txt" />
+    <None Remove="Inputs\Day7.txt" />
     <None Remove="Inputs\test.txt" />
   </ItemGroup>
 
