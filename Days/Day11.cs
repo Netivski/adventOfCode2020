@@ -23,10 +23,10 @@ namespace AdventOfCode {
         static Point DownLeft = new Point(-1, 1);
         static Point DownRight = new Point(1, 1);
 
-        static void PrintSeating(char[][]seats) {
+        static void PrintSeating(char[][] seats) {
             Console.WriteLine();
-            for (int i=0; i<seats.Length; i++) {
-                for (int j=0; j<seats[i].Length; j++) {
+            for (int i = 0; i < seats.Length; i++) {
+                for (int j = 0; j < seats[i].Length; j++) {
                     Console.Write(seats[i][j]);
                 }
                 Console.WriteLine();
@@ -53,30 +53,6 @@ namespace AdventOfCode {
             return true;
         }
 
-        static void IsAdjacentOccupied(char[][] matrix, Point seat, out int adjCount) {
-            int maxCols = matrix[0].Length;
-            int maxRows = matrix.Length;
-            adjCount = 0;
-
-            List<Point> area = new List<Point>() {
-                new Point(seat.X + Up.X, seat.Y + Up.Y),
-                new Point(seat.X + Down.X, seat.Y + Down.Y),
-                new Point(seat.X + Right.X, seat.Y + Right.Y),
-                new Point(seat.X + Left.X, seat.Y + Left.Y),
-                new Point(seat.X + UpRight.X, seat.Y + UpRight.Y),
-                new Point(seat.X + UpLeft.X, seat.Y + UpLeft.Y),
-                new Point(seat.X + DownRight.X, seat.Y + DownRight.Y),
-                new Point(seat.X + DownLeft.X, seat.Y + DownLeft.Y),
-            };
-
-            foreach (Point p in area) {
-                if (p.X >= 0 && p.X < maxCols && p.Y >= 0 && p.Y < maxRows) {
-                    if (matrix[p.Y][p.X] == '#') { adjCount++; }
-                }
-            }
-
-        }
-
         static void IncreaseBoundary(ref Point[] points) {
             points[0].X += UpLeft.X; points[0].Y += UpLeft.Y;
             points[1].X += Up.X; points[1].Y += Up.Y;
@@ -91,18 +67,18 @@ namespace AdventOfCode {
         static bool IsFullyOutsideBounds(Point[] points, int maxCols, int maxRows) {
             int outsideCount = 0;
             for (int i = 0; i < points.Length; i++) {
-                if (points[i].X >= maxCols || points[i].X < 0 
-                    || points[i].Y < 0 || points[i].Y >= maxRows) { 
-                    outsideCount++; 
+                if (points[i].X >= maxCols || points[i].X < 0
+                    || points[i].Y < 0 || points[i].Y >= maxRows) {
+                    outsideCount++;
                 }
             }
             return outsideCount == 8;
         }
 
-        static void IsAdjacentOccupiedV2(char[][] matrix, Point seat, out int adjCount) {
+        static int GetOccupiedAdjacentSeats(char[][] matrix, Point seat, bool lineOfSight = false) {
             int maxCols = matrix[0].Length;
             int maxRows = matrix.Length;
-            adjCount = 0;
+            int adjCount = 0;
             //Starting from upper left clockwise
             //   012
             //   3 4
@@ -118,36 +94,36 @@ namespace AdventOfCode {
                 new Point(seat.X + Down.X, seat.Y + Down.Y),
                 new Point(seat.X + DownRight.X, seat.Y + DownRight.Y),
             };
-            int[] occupied = new int[8]; // 0 - empty | 1 - free | 2 - occupied
+            int[] boundaryStatus = new int[8]; // 0 - empty | 1 - free | 2 - occupied
 
             while (!IsFullyOutsideBounds(boundary, maxCols, maxRows)) {
                 for (int i = 0; i < boundary.Length; i++) {
 
                     if (boundary[i].X >= 0 && boundary[i].X < maxCols && boundary[i].Y >= 0 && boundary[i].Y < maxRows) {
                         if (matrix[boundary[i].Y][boundary[i].X] == '#') {
-                            if (occupied[i] == 0) {
-                                occupied[i] = 2;
+                            if (boundaryStatus[i] == 0) {
+                                boundaryStatus[i] = 2;
                                 adjCount++;
                             }
                         } else if (matrix[boundary[i].Y][boundary[i].X] == 'L') {
-                            if (occupied[i] == 0) {
-                                occupied[i] = 1;
-                            }
+                            if (boundaryStatus[i] == 0) { boundaryStatus[i] = 1; }
                         }
                     }
                 }
+                if (!lineOfSight) { break; }
                 IncreaseBoundary(ref boundary);
             }
+            return adjCount;
         }
 
         public static void First() {
-            var roundSeating = Utils.ReadCharMatrix(Path.Combine(Inputs, "Day11.txt"));
-            int maxCols = roundSeating[0].Length;
-            int maxLines = roundSeating.Length;
+            var baseSeating = Utils.ReadCharMatrix(Path.Combine(Inputs, "Day11.txt"));
+            int maxCols = baseSeating[0].Length;
+            int maxLines = baseSeating.Length;
 
             Point p = new Point();
 
-            char[][] roundCopy = roundSeating.Select(a => a.ToArray()).ToArray();
+            char[][] seatingCopy = baseSeating.Select(a => a.ToArray()).ToArray();
             int iterCount = 0;
             bool seatingChanged = true;
 
@@ -157,24 +133,21 @@ namespace AdventOfCode {
                 p.Y = 0;
                 while (p.Y < maxLines) {
 
-                    int adjCount = 0;
-                    IsAdjacentOccupied(roundSeating, p, out adjCount);
+                    int adjCount = GetOccupiedAdjacentSeats(baseSeating, p);
 
-                    if (roundSeating[p.Y][p.X] == 'L' && adjCount == 0) {
-                        roundCopy[p.Y][p.X] = '#';
-                    } else if (roundSeating[p.Y][p.X] == '#' && adjCount >= 4) {
-                        roundCopy[p.Y][p.X] = 'L';
+                    if (baseSeating[p.Y][p.X] == 'L' && adjCount == 0) {
+                        seatingCopy[p.Y][p.X] = '#';
+                    } else if (baseSeating[p.Y][p.X] == '#' && adjCount >= 4) {
+                        seatingCopy[p.Y][p.X] = 'L';
                     }
                     p.Y += (p.X + 1) == maxCols ? 1 : 0;
                     p.X += 1;
                     p.X = p.X % maxCols;
                 }
-                if (AreSeatingsEqual(roundCopy, roundSeating)) {
-                    seatingChanged = false;
-                } 
-                    roundSeating = roundCopy.Select(a => a.ToArray()).ToArray();
+                if (AreSeatingsEqual(seatingCopy, baseSeating)) { seatingChanged = false; }
+                baseSeating = seatingCopy.Select(a => a.ToArray()).ToArray();
             }
-            Console.WriteLine("Number of occupied seats: {0}", CountOccupied(roundSeating));
+            Console.WriteLine("Number of occupied seats: {0}", CountOccupied(baseSeating));
         }
 
         public static void Second() {
@@ -189,14 +162,13 @@ namespace AdventOfCode {
             bool seatingChanged = true;
             //PrintSeating(roundSeating);
             while (seatingChanged) {
-                
+
                 iterCount++;
                 p.X = 0;
                 p.Y = 0;
                 while (p.Y < maxLines) {
 
-                    int adjCount = 0;
-                    IsAdjacentOccupiedV2(roundSeating, p, out adjCount);
+                    int adjCount = GetOccupiedAdjacentSeats(roundSeating, p, true);
 
                     if (roundSeating[p.Y][p.X] == 'L' && adjCount == 0) {
                         roundCopy[p.Y][p.X] = '#';
@@ -208,9 +180,7 @@ namespace AdventOfCode {
                     p.X = p.X % maxCols;
                 }
                 //PrintSeating(roundCopy);
-                if (AreSeatingsEqual(roundCopy, roundSeating)) {
-                    seatingChanged = false;
-                }
+                if (AreSeatingsEqual(roundCopy, roundSeating)) { seatingChanged = false; }
                 roundSeating = roundCopy.Select(a => a.ToArray()).ToArray();
             }
             Console.WriteLine("Number of occupied seats: {0}", CountOccupied(roundSeating));
