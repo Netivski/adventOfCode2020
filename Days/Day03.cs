@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 
 namespace AdventOfCode {
-    class Day3 {
+    class Day03 {
 
         public static readonly string App = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
         public static readonly string Inputs = Path.Combine(App, "Inputs");
@@ -13,7 +13,7 @@ namespace AdventOfCode {
         public static int TraverseMap(Point slope) {
             int numTrees = 0, numMoves = 0;
 
-            var matrix = Utils.ReadCharMatrix(Path.Combine(Inputs, "Day3.txt"));
+            var matrix = Utils.ReadCharMatrix(Path.Combine(Inputs, "Day03.txt"));
             int maxCols = matrix[0].Length;
             int maxLines = matrix.Length - 1;
 

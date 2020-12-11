@@ -28,7 +28,7 @@ namespace AdventOfCode {
         }
     }
 
-    class Day7 {
+    class Day07 {
 
         public static readonly string App = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
         public static readonly string Inputs = Path.Combine(App, "Inputs");
@@ -75,7 +75,7 @@ namespace AdventOfCode {
         }
 
         public static void First() {
-            var lines = Utils.ReadLines(Path.Combine(Inputs, "Day7.txt"));
+            var lines = Utils.ReadLines(Path.Combine(Inputs, "Day07.txt"));
             var bags = GetListOfBags(lines);
             Bag dummy;
             if (bags.TryGetValue(new Bag("shiny gold"), out dummy)) {
@@ -96,7 +96,7 @@ namespace AdventOfCode {
         }
 
         public static void Second() {
-            var lines = Utils.ReadLines(Path.Combine(Inputs, "Day7.txt"));
+            var lines = Utils.ReadLines(Path.Combine(Inputs, "Day07.txt"));
             var bags = GetListOfBags(lines);
             Bag dummy;
             if (bags.TryGetValue(new Bag("shiny gold"), out dummy)) {

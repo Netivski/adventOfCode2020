@@ -21,6 +21,16 @@ namespace AdventOfCode {
             return results;
         }
 
+        public static long[] ReadLongLines(string path) {
+
+            var lines = File.ReadAllLines(path);
+            long[] results = new long[lines.Length];
+            for (int i = 0; i < lines.Length; i++) {
+                results[i] = long.Parse(lines[i]);
+            }
+            return results;
+        }
+
         public static char[][] ReadCharMatrix(string path) {
 
             IList<char[]> lines = new List<char[]>();

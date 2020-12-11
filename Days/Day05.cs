@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 namespace AdventOfCode {
-    class Day5 {
+    class Day05 {
 
         public static readonly string App = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
         public static readonly string Inputs = Path.Combine(App, "Inputs");
@@ -32,7 +32,7 @@ namespace AdventOfCode {
         }
 
         public static void First() {
-            var lines = Utils.ReadLines(Path.Combine(Inputs, "Day5.txt"));
+            var lines = Utils.ReadLines(Path.Combine(Inputs, "Day05.txt"));
 
             var maxId = 0;
             char[] rowsArr = new char[7];

@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 namespace AdventOfCode {
-    class Day4 {
+    class Day04 {
 
         public static readonly string App = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
         public static readonly string Inputs = Path.Combine(App, "Inputs");
@@ -59,7 +59,7 @@ namespace AdventOfCode {
         }
 
         public static void First() {
-            var s = Utils.ReadPassports(Path.Combine(Inputs, "Day4.txt"));
+            var s = Utils.ReadPassports(Path.Combine(Inputs, "Day04.txt"));
             int valids = 0, dblValids = 0;
             foreach(var passport in s) {
                 if (CheckPassport(passport)) { valids++; }
@@ -68,7 +68,7 @@ namespace AdventOfCode {
             Console.WriteLine("Valid passports: {0}", valids);
         }
         public static void Second() {
-            var s = Utils.ReadPassports(Path.Combine(Inputs, "Day4.txt"));
+            var s = Utils.ReadPassports(Path.Combine(Inputs, "Day04.txt"));
             int valids = 0, dblValids = 0;
             foreach (var passport in s) {
                 if (CheckPassport(passport)) { valids++; }

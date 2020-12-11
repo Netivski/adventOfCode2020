@@ -6,13 +6,13 @@ using System.Linq;
 namespace AdventOfCode {
 
 
-    class Day8 {
+    class Day08 {
 
         public static readonly string App = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
         public static readonly string Inputs = Path.Combine(App, "Inputs");
 
         public static void First() {
-            var lines = Utils.ReadLines(Path.Combine(Inputs, "Day8.txt"));
+            var lines = Utils.ReadLines(Path.Combine(Inputs, "Day08.txt"));
             HashSet<int> iVals = new HashSet<int>();
             var acc = 0;
 
@@ -41,7 +41,7 @@ namespace AdventOfCode {
         }
 
         public static void Second() {
-            var lines = Utils.ReadLines(Path.Combine(Inputs, "Day8.txt"));
+            var lines = Utils.ReadLines(Path.Combine(Inputs, "Day08.txt"));
             Dictionary<int, int> iVals = new Dictionary<int, int>();
             int maxLoop = 1;
             var acc = 0;
