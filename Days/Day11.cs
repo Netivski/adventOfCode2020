@@ -79,22 +79,17 @@ namespace AdventOfCode {
             int maxCols = matrix[0].Length;
             int maxRows = matrix.Length;
             int adjCount = 0;
+
             //Starting from upper left clockwise
             //   012
             //   3 4
             //   567
-
             Point[] boundary = new Point[] {
-                new Point(seat.X + UpLeft.X, seat.Y + UpLeft.Y),
-                new Point(seat.X + Up.X, seat.Y + Up.Y),
-                new Point(seat.X + UpRight.X, seat.Y + UpRight.Y),
-                new Point(seat.X + Left.X, seat.Y + Left.Y),
-                new Point(seat.X + Right.X, seat.Y + Right.Y),
-                new Point(seat.X + DownLeft.X, seat.Y + DownLeft.Y),
-                new Point(seat.X + Down.X, seat.Y + Down.Y),
-                new Point(seat.X + DownRight.X, seat.Y + DownRight.Y),
+                new Point(seat.X + UpLeft.X, seat.Y + UpLeft.Y), new Point(seat.X + Up.X, seat.Y + Up.Y), new Point(seat.X + UpRight.X, seat.Y + UpRight.Y),
+                new Point(seat.X + Left.X, seat.Y + Left.Y), new Point(seat.X + Right.X, seat.Y + Right.Y),
+                new Point(seat.X + DownLeft.X, seat.Y + DownLeft.Y), new Point(seat.X + Down.X, seat.Y + Down.Y), new Point(seat.X + DownRight.X, seat.Y + DownRight.Y),
             };
-            int[] boundaryStatus = new int[8]; // 0 - empty | 1 - free | 2 - occupied
+            int[] boundaryStatus = new int[8]; // 0 - <empty> | 1 - free | 2 - occupied
 
             while (!IsFullyOutsideBounds(boundary, maxCols, maxRows)) {
                 for (int i = 0; i < boundary.Length; i++) {
@@ -111,6 +106,7 @@ namespace AdventOfCode {
                     }
                 }
                 if (!lineOfSight) { break; }
+                if (boundaryStatus.Where(e => e == 0).Count() == 0) { break; }
                 IncreaseBoundary(ref boundary);
             }
             return adjCount;
