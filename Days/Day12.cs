@@ -14,9 +14,7 @@ namespace AdventOfCode {
         public static readonly string App = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
         public static readonly string Inputs = Path.Combine(App, "Inputs");
 
-
-
-        class Position {
+        class Ship {
 
             // Coordinate related members
             static readonly Point North = new Point(0, -1);
@@ -33,7 +31,7 @@ namespace AdventOfCode {
             public Point waypoint;
             public bool useWaypoint;
 
-            public Position(bool useWayPoint = false) {
+            public Ship(bool useWayPoint = false) {
                 direction = 1; //default is 'East'
                 location = new Point(0, 0);
                 waypoint = new Point(10, -1);
@@ -104,32 +102,30 @@ namespace AdventOfCode {
 
         public static void First() {
             var directions = Utils.ReadLines(Path.Combine(Inputs, "Day12.txt"));
-            Position pos = new Position();
+            Ship ship = new Ship();
 
             foreach (string line in directions) {
                 char action = line[0];
                 int val = int.Parse(line.Substring(1));
-                pos.ProcessAction(action, val);
+                ship.ProcessAction(action, val);
             }
-            Console.WriteLine("Ship position is: ({0} {1}, {2} {3})", Math.Abs(pos.location.X), pos.location.X > 0 ? 'E' : 'W', Math.Abs(pos.location.Y), pos.location.Y > 0 ? 'S' : 'N');
-            Console.WriteLine("Ship direction is: ({0} {1}, {2} {3})", pos.Direction.X, pos.Direction.X > 0 ? 'E' : 'W', pos.Direction.Y, pos.Direction.Y > 0 ? 'S' : 'N');
-            Console.WriteLine("Manhattan distance: {0}", Math.Abs(pos.location.X) + Math.Abs(pos.location.Y));
-
+            Console.WriteLine("Ship position is: {0}", ship.location);
+            Console.WriteLine("Ship direction is: {0}", ship.Direction);
+            Console.WriteLine("Manhattan distance: {0}", Math.Abs(ship.location.X) + Math.Abs(ship.location.Y));
         }
 
         public static void Second() {
             var directions = Utils.ReadLines(Path.Combine(Inputs, "Day12.txt"));
-            Position pos = new Position(true);
+            Ship ship = new Ship(true);
 
             foreach (string line in directions) {
                 char action = line[0];
                 int val = int.Parse(line.Substring(1));
-                pos.ProcessAction(action, val);
+                ship.ProcessAction(action, val);
             }
-            Console.WriteLine("Ship position is: ({0} {1}, {2} {3})", Math.Abs(pos.location.X), pos.location.X > 0 ? 'E' : 'W', Math.Abs(pos.location.Y), pos.location.Y > 0 ? 'S' : 'N');
-            Console.WriteLine("Ship waypoint is: ({0} {1}, {2} {3})", pos.waypoint.X, pos.waypoint.X > 0 ? 'E' : 'W', pos.waypoint.Y, pos.waypoint.Y > 0 ? 'S' : 'N');
-            Console.WriteLine("Manhattan distance: {0}", Math.Abs(pos.location.X) + Math.Abs(pos.location.Y));
-
+            Console.WriteLine("Ship position is: {0}", ship.location);
+            Console.WriteLine("Ship waypoint is: {0}", ship.waypoint);
+            Console.WriteLine("Manhattan distance: {0}", Math.Abs(ship.location.X) + Math.Abs(ship.location.Y));
         }
     }
 }
