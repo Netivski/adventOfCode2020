@@ -40,6 +40,11 @@ namespace AdventOfCode {
 
             public Point Direction { get { return CoordArr[direction]; } }
 
+            public void SetNextDirection(bool clockwise, int numTimes) {
+                int next = clockwise ? direction + numTimes : direction - numTimes;
+                direction = ((next % CoordArr.Length) + CoordArr.Length) % CoordArr.Length;
+            }
+
             public void ProcessAction(char action, int val) {
                 if (!useWaypoint) {
                     if (action == 'L') {
@@ -56,11 +61,6 @@ namespace AdventOfCode {
                 } else {
                     ProcessActionWithWayPoint(action, val);
                 }
-            }
-
-            public void SetNextDirection(bool clockwise, int numTimes) {
-                int next = clockwise ? direction + numTimes : direction - numTimes;
-                direction = ((next % CoordArr.Length) + CoordArr.Length) % CoordArr.Length;
             }
 
             public void Turn(bool clockwise, int degrees) {
