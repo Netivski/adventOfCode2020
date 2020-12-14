@@ -47,33 +47,64 @@ namespace AdventOfCode {
             Console.WriteLine("Total is {0}", total);
         }
 
+        static List<string> ExpandXBit(string xValue) {
+            List<string> res = new List<string>();
+            int xIndex = xValue.IndexOf('X');
+
+            if (xIndex >= 0) {
+                char[] str = xValue.ToCharArray();
+                str[xIndex] = '1';
+                string withOne = new string(str);
+                str[xIndex] = '0';
+                string withZero = new string(str);
+
+                res.AddRange(ExpandXBit(withOne));
+                res.AddRange(ExpandXBit(withZero));
+            } else {
+                res.Add(xValue);
+            }
+            return res;
+        }
+
+        static string AddXsToValue(string mask, ulong value) {
+            char[] idxWithXs = new char[36];
+            string idxAsString = Convert.ToString((long)value, 2);
+            int j = idxAsString.Length - 1;
+
+            for (int i = 35; i >= 0; i--) {
+                char newChar = j < 0 ? '0' : idxAsString[j];
+                if (mask[i] == 'X') {
+                    idxWithXs[i] = 'X';
+                } else {
+                    idxWithXs[i] = newChar;
+                }
+                j--;
+            }
+            return new string(idxWithXs);
+        }
+
         static void WriteMemoryMasked(string currMask, Dictionary<ulong, ulong> mem, string memLine) {
             memLine = memLine.Replace("mem[", "").Replace("] = ", "=");
+            ulong memIndex = ulong.Parse(memLine.Substring(0, memLine.IndexOf('='))); // Memory index
+            ulong value = ulong.Parse(memLine.Substring(memLine.IndexOf('=') + 1)); // Value to write
             
-            ulong idx = ulong.Parse(memLine.Substring(0, memLine.IndexOf('=')));
-            ulong value = ulong.Parse(memLine.Substring(memLine.IndexOf('=') + 1));
             int numXs = currMask.Count(c => c == 'X');
-            ulong numIndexes = (ulong)Math.Pow(2, numXs);
-            //Console.WriteLine("Mask: {0} | Xs: {1} | Indexes: {2}", currMask, numXs, numIndexes );
-            ulong idxWithOnes = idx | Convert.ToUInt64(currMask.Replace('X', '0'), 2);
+            ulong memIdxWithOneFromMask = memIndex | Convert.ToUInt64(currMask.Replace('X', '0'), 2); // Index with 1s set from mask
 
-            ulong xAsZero = idxWithOnes & Convert.ToUInt64(currMask.Replace('0', '1').Replace('X', '0'), 2); // To Set to Zero
-            ulong xAsOne = idxWithOnes | Convert.ToUInt64(currMask.Replace('1', '0').Replace('X', '1'), 2); // To Set To One
+            var finalIndexWithXs = AddXsToValue(currMask, memIdxWithOneFromMask);
+            List<string> affectedIndexes = ExpandXBit(finalIndexWithXs);
 
-            for (ulong i = 0; i < numIndexes / 2; i++) {
-
-                if (!mem.ContainsKey(xAsZero + i)) { mem.Add(xAsZero + i, 0); }
-                mem[xAsZero + i] = value;
-
-                if (!mem.ContainsKey(xAsOne - i)) { mem.Add(xAsOne - i, 0); }
-                mem[xAsOne - i] = value;
+            foreach (string idxToSet in affectedIndexes) {
+                mem[Convert.ToUInt64(idxToSet, 2)] = value;
             }
         }
 
         public static void Second() {
+
             var lines = Utils.ReadLines(Path.Combine(Inputs, "Day14.txt")).ToArray();
             string currMask = "";
             Dictionary<ulong, ulong> memory = new Dictionary<ulong, ulong>();
+
             for (int i = 0; i < lines.Count(); i++) {
                 if (lines[i].StartsWith("mask")) {
                     currMask = lines[i].Substring(7);
@@ -82,6 +113,7 @@ namespace AdventOfCode {
                 }
             }
             ulong total = 0;
+
             foreach (ulong idx in memory.Keys) {
                 total += memory[idx];
             }
