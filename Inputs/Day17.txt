@@ -1,4 +1,4 @@
-departure location: 1-4001 or 1-9065
+departure location: 44-401 or 415-965
 departure station: 44-221 or 243-953
 departure platform: 29-477 or 484-963
 departure track: 43-110 or 126-951
